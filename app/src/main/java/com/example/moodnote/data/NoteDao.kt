@@ -25,7 +25,7 @@ interface NoteDao {
             "(:emotionIdList is null or emotionId in (:emotionIdList)) and" +
             "(:event is null or event like :event)")
     fun getNotesByFilter(dateFrom: Long?, dateTo: Long?,
-                         emotionIdList: List<Int>?,
+                         emotionIdList: List<Int>,
                          event: String?) : Flow<List<Note>>
 
     @Delete

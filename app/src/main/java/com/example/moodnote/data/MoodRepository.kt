@@ -30,7 +30,7 @@ class MoodRepository @Inject constructor(
 
     fun getNotesByFilter(
         dateFrom: Long?, dateTo: Long?,
-        emotionIdList: List<Int>?, event: String?
+        emotionIdList: List<Int>, event: String?
     ): Flow<List<Note>> {
         return noteDao.getNotesByFilter(dateFrom, dateTo, emotionIdList, event)
     }
