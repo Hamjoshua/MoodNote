@@ -32,3 +32,18 @@ data class Note(
     val reason: String,
     val date: Long
 )
+
+val defaultEmojis = listOf(
+    Emotion(1, "Воодушевление", 0x1F929, 3),
+    Emotion(2, "Радость", 0x1F600, 2),
+    Emotion(3, "Спокойствие", 0x1F60C, 1),
+    Emotion(4, "Нейтральность", 0x1F610, 0),
+    Emotion(5, "Усталость", 0x1F62B, -1),
+    Emotion(6, "Грусть", 0x1F61E, -2),
+    Emotion(7, "Тревога", 0x1F630, -3),
+    Emotion(8, "Злость", 0x1F620, -2),
+    Emotion(9, "Удивление", 0x1F62E, 0),
+    Emotion(10, "Благодарность", 0x1F64F, 2),
+    Emotion(11, "Любовь", 0x1F60D, 3),
+    Emotion(12, "Смущение", 0x1F605, -1)
+)

@@ -17,8 +17,11 @@ interface NoteDao {
     @Query("Select * from Note where" +
             "(:dateFrom is null or date > :dateFrom) and" +
             "(:dateTo is null or date < :dateTo) and" +
-            "(:emotionIdList is null or emotionId in (:emotionIdList))")
-    fun getNotesByFilter(dateFrom: Long?, dateTo: Long?, emotionIdList: List<Int>) : List<Note>
+            "(:emotionIdList is null or emotionId in (:emotionIdList)) and" +
+            "(:event is null or event like :event)")
+    fun getNotesByFilter(dateFrom: Long?, dateTo: Long?,
+                         emotionIdList: List<Int>?,
+                         event: String?) : List<Note>
 
     @Delete
     fun deleteNote(note: Note)
