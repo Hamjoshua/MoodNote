@@ -12,7 +12,7 @@
 - ViewBinding
 - MPAndroidChart
 
-## 📂 Структура проекта  
+## Структура проекта  
 - `data/` — сущности Room, DAO, Repository  
 - `ui/` — Activity, Fragments
 - `vm/` - ViewModels
