@@ -6,11 +6,12 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
     @Query("Select * from Note")
-    fun getAllNotes() : LiveData<List<Note>>
+    fun getAllNotes() : Flow<List<Note>>
 
     @Query("Select * from Note where id = (:id)")
     fun getNote(id: Int) : Note
@@ -25,7 +26,7 @@ interface NoteDao {
             "(:event is null or event like :event)")
     fun getNotesByFilter(dateFrom: Long?, dateTo: Long?,
                          emotionIdList: List<Int>?,
-                         event: String?) : LiveData<List<Note>>
+                         event: String?) : Flow<List<Note>>
 
     @Delete
     fun deleteNote(note: Note)

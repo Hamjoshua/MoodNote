@@ -1,21 +1,22 @@
 package com.example.moodnote.data
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MoodRepository @Inject constructor(
     private val noteDao: NoteDao,
     private val emotionDao: EmotionDao
 ) {
-    fun getAllNotes(): LiveData<List<Note>> {
+    fun getAllNotes(): Flow<List<Note>> {
         return noteDao.getAllNotes()
     }
 
-    fun getAllEmotions(): LiveData<List<Emotion>> {
+    fun getAllEmotions(): Flow<List<Emotion>> {
         return emotionDao.getAllEmotions()
     }
 
-    fun removeNote(note: Note) {
+    fun deleteNote(note: Note) {
         noteDao.deleteNote(note)
     }
 
@@ -30,7 +31,7 @@ class MoodRepository @Inject constructor(
     fun getNotesByFilter(
         dateFrom: Long?, dateTo: Long?,
         emotionIdList: List<Int>?, event: String?
-    ): LiveData<List<Note>> {
+    ): Flow<List<Note>> {
         return noteDao.getNotesByFilter(dateFrom, dateTo, emotionIdList, event)
     }
 }
