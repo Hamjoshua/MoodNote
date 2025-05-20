@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Эмоция"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <Spinner
+            android:id="@+id/emotionSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Событие"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <EditText
+            android:hint="Что это было?"
+            android:id="@+id/eventEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </EditText>
+
+        <TextView
+            android:text="Причина"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+        <EditText
+            android:gravity="top|start"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:id="@+id/reasonEditText"
+            android:hint="Почему вы испытали эту эмоцию?"
+            android:minHeight="200sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </EditText>
+
+        <TextView
+            android:text="Дата"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+        <Button
+            android:id="@+id/dateButton"
+            style="@style/Widget.AppCompat.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="09/09/2025">
+
+        </Button>
+
+        <Button
+            android:text="Сохранить"
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </Button>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
