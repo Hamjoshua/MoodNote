@@ -12,10 +12,11 @@
         android:orientation="vertical">
 
         <EditText
+            android:inputType="text"
             android:id="@+id/eventEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/app_name"></EditText>
+            android:hint="Событие" />
 
         <LinearLayout
             android:orientation="horizontal"

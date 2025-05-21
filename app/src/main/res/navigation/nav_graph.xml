@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.moodnote.ui.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_noteFormFragment"
+            app:destination="@id/noteFormFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_statisticsFragment"
+            app:destination="@id/statisticsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteFormFragment"
+        android:name="com.example.moodnote.ui.NoteFormFragment"
+        android:label="fragment_note_form"
+        tools:layout="@layout/fragment_note_form" >
+        <argument
+            android:name="noteId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.example.moodnote.ui.StatisticsFragment"
+        android:label="fragment_statistics"
+        tools:layout="@layout/fragment_statistics" />
 </navigation>

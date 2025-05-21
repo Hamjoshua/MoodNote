@@ -14,7 +14,8 @@
             android:id="@+id/fragmentContainerView"
             android:name="com.example.moodnote.ui.FilterFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_filter" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/noteList"
@@ -24,16 +25,5 @@
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_margin="15sp"
-        android:id="@+id/addNoteButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/baseline_add_24"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

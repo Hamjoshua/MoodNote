@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="toMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_home_24"
+        android:title="Домой" />
+    <item
+        android:id="toNoteForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_add_24"
+        android:title="Создать" />
+    <item
+        android:id="@+id/toStatistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_query_stats_24"
+        android:title="Статистика" />
+</menu>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.NoteFormFragment">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,6 +17,7 @@
         </TextView>
 
         <Spinner
+            android:minHeight="50sp"
             android:id="@+id/emotionSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -26,6 +29,8 @@
         </TextView>
 
         <EditText
+            android:inputType="text"
+            android:minHeight="50sp"
             android:hint="Что это было?"
             android:id="@+id/eventEditText"
             android:layout_width="match_parent"
@@ -38,6 +43,7 @@
             android:layout_height="wrap_content">
         </TextView>
         <EditText
+            android:inputType="text"
             android:gravity="top|start"
             style="@style/TextAppearance.AppCompat.Large"
             android:id="@+id/reasonEditText"
@@ -69,4 +75,4 @@
         </Button>
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
