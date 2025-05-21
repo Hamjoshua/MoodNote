@@ -7,19 +7,12 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.moodnote.ui.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
-        <action
-            android:id="@+id/action_mainFragment_to_noteFormFragment"
-            app:destination="@id/noteFormFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_statisticsFragment"
-            app:destination="@id/statisticsFragment" />
-    </fragment>
+        android:label="Главное меню"
+        tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/noteFormFragment"
         android:name="com.example.moodnote.ui.NoteFormFragment"
-        android:label="fragment_note_form"
+        android:label="Создание записи"
         tools:layout="@layout/fragment_note_form" >
         <argument
             android:name="noteId"
@@ -29,6 +22,6 @@
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.example.moodnote.ui.StatisticsFragment"
-        android:label="fragment_statistics"
+        android:label="Статистика"
         tools:layout="@layout/fragment_statistics" />
 </navigation>
