@@ -40,46 +40,23 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         // TODO
         binding.dateToButton.setOnClickListener {
             var minDate: Long? = null
-            binding.dateFromButton.text?.let {
-                val date = SimpleDateFormat("yyyy/MM/dd").parse(it.toString())
+            if (binding.dateFromButton.text != "") {
+                val date = SimpleDateFormat("yyyy/MM/dd").parse(
+                    binding.dateFromButton.text.toString()
+                )
                 minDate = date.time
             }
-            currentButton = binding.dateToButton
-            initDateTimeDialogs(minDate)
+
+            DateTimePickerHelper(requireContext()) {
+                binding.dateToButton.text = it
+            }.show(minDate)
         }
 
         binding.dateFromButton.setOnClickListener {
-            currentButton = binding.dateFromButton
-            initDateTimeDialogs()
-        }
-    }
+            DateTimePickerHelper(requireContext()) {
+                binding.dateFromButton.text = it
+            }.show()
 
-    private fun initDateTimeDialogs(minDate: Long? = null) {
-        var date: String = ""
-
-        val dateDialog: DatePickerDialog = DatePickerDialog(requireContext())
-        minDate?.let {
-            dateDialog.datePicker.minDate = minDate
-        }
-
-        dateDialog.show()
-
-        dateDialog.setOnDateSetListener { datePicker, y, m, d ->
-            Log.d("datepicker", "Date set")
-            date = "$y/$m/$d"
-            currentButton.text = date
-
-            val c = Calendar.getInstance()
-            val hour = c.get(Calendar.HOUR_OF_DAY)
-            val minute = c.get(Calendar.MINUTE)
-
-            val timePickerDialog: TimePickerDialog =
-                TimePickerDialog(
-                    requireContext(), this, hour, minute,
-                    DateFormat.is24HourFormat(activity)
-                )
-
-            timePickerDialog.show()
         }
     }
 

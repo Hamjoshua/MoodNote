@@ -43,8 +43,11 @@
             android:layout_height="wrap_content">
         </TextView>
         <EditText
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:gravity="top|start"
+            android:lines="8"
+            android:minLines="6"
+            android:maxLines="14"
             style="@style/TextAppearance.AppCompat.Large"
             android:id="@+id/reasonEditText"
             android:hint="Почему вы испытали эту эмоцию?"
