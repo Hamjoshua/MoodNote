@@ -64,6 +64,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.4.1")
     annotationProcessor("androidx.room:room-compiler:2.4.1")
     kapt("androidx.room:room-compiler:2.4.1")
+    implementation("androidx.room:room-ktx:2.2.1")
 
     // activities
     implementation("androidx.activity:activity:1.10.1")
