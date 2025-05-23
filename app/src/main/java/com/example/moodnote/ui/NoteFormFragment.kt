@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.moodnote.R
 import com.example.moodnote.data.Note
 import com.example.moodnote.databinding.FragmentNoteFormBinding
 import com.example.moodnote.utils.toLongDate
+import com.example.moodnote.vm.MoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 private const val NOTE_ID = "noteId"
@@ -18,6 +22,7 @@ private const val NOTE_ID = "noteId"
 
 @AndroidEntryPoint
 class NoteFormFragment : Fragment() {
+    private val viewModel : MoodViewModel by viewModels()
     private lateinit var binding: FragmentNoteFormBinding
     private var noteId: Long? = null
 
@@ -40,7 +45,17 @@ class NoteFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initSpinner()
         initButtons()
+    }
+
+    private fun initSpinner() {
+        lifecycleScope.launch {
+            viewModel.emotions.collect {
+                binding.emotionSpinner.
+
+            }
+        }
     }
 
     private fun initButtons() {
@@ -70,6 +85,7 @@ class NoteFormFragment : Fragment() {
             } else {
                 val formatedDate = date.toLongDate()
                 val note: Note = Note(0, emotionId, event, reason, formatedDate)
+                viewModel.addOrEditNewNote(note)
             }
         }
     }
