@@ -12,19 +12,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TimePicker
+import androidx.fragment.app.viewModels
 import com.example.moodnote.R
 import com.example.moodnote.databinding.FragmentFilterBinding
+import com.example.moodnote.utils.toLongDate
+import com.example.moodnote.vm.MoodViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@AndroidEntryPoint
 class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
+    private val viewModel : MoodViewModel by viewModels()
     private lateinit var binding: FragmentFilterBinding
     private lateinit var currentButton: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFilterBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
@@ -41,10 +47,7 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         binding.dateToButton.setOnClickListener {
             var minDate: Long? = null
             if (binding.dateFromButton.text != "") {
-                val date = SimpleDateFormat("yyyy/MM/dd").parse(
-                    binding.dateFromButton.text.toString()
-                )
-                minDate = date.time
+                minDate = binding.dateFromButton.text.toString().toLongDate()
             }
 
             DateTimePickerHelper(requireContext()) {
@@ -57,6 +60,13 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
                 binding.dateFromButton.text = it
             }.show()
 
+        }
+
+        binding.clearFilterButton.setOnClickListener {
+            viewModel.clearFilter()
+            binding.dateFromButton.text = ""
+            binding.dateToButton.text = ""
+            binding.eventEditText.setText("")
         }
     }
 

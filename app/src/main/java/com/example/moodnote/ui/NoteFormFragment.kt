@@ -5,12 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.moodnote.R
+import com.example.moodnote.data.Note
 import com.example.moodnote.databinding.FragmentNoteFormBinding
+import com.example.moodnote.utils.toLongDate
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
 private const val NOTE_ID = "noteId"
 
+
+@AndroidEntryPoint
 class NoteFormFragment : Fragment() {
     private lateinit var binding: FragmentNoteFormBinding
     private var noteId: Long? = null
@@ -49,6 +55,22 @@ class NoteFormFragment : Fragment() {
             DateTimePickerHelper(requireContext()) {
                 binding.dateButton.text = it
             }.show()
+        }
+
+        binding.saveButton.setOnClickListener {
+            val date: String = binding.dateButton.text.toString()
+            // TODO как брать значения из спиннера
+            val emotionId: Int? = null
+            val event: String = binding.eventEditText.text.toString()
+            val reason: String = binding.reasonEditText.text.toString()
+
+            if (date == "" || event == "" || reason == "" || emotionId == null) {
+                Toast.makeText(requireContext(), "Не все поля заполнены", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                val formatedDate = date.toLongDate()
+                val note: Note = Note(0, emotionId, event, reason, formatedDate)
+            }
         }
     }
 }
