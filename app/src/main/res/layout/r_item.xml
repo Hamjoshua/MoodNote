@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10sp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:paddingEnd="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/emotionShowerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="😀"
+        android:textSize="50sp"
+        />
+    <TextView
+        app:layout_constraintLeft_toRightOf="@id/emotionShowerText"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/eventShowerText"
+        android:layout_width="wrap_content"
+        android:textSize="25sp"
+        android:text="event"
+        android:layout_height="wrap_content">
+
+    </TextView>
+    <TextView
+        android:id="@+id/dateShowerText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/emotionShowerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="09/09/2009 9:09">
+
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
