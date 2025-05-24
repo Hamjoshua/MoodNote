@@ -30,4 +30,8 @@ interface NoteDao {
 
     @Delete
     fun deleteNote(note: Note)
+
+
+    @Query("SELECT * FROM Note")
+    fun getNotesWithEmotions(): Flow<List<NoteWithEmotion>>
 }

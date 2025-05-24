@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.moodnote.data.Emotion
 import com.example.moodnote.data.MoodRepository
 import com.example.moodnote.data.Note
+import com.example.moodnote.data.NoteWithEmotion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,10 +28,10 @@ class MoodViewModel @Inject constructor(
     private val moodRepository: MoodRepository
 ) : ViewModel() {
     private val _emotions: MutableStateFlow<List<Emotion>> = MutableStateFlow(emptyList())
-    private val _notes: MutableStateFlow<List<Note>> = MutableStateFlow(emptyList())
+    private val _notes: MutableStateFlow<List<NoteWithEmotion>> = MutableStateFlow(emptyList())
     private var _emotionIdList: List<Int> = emptyList()
     val emotions: StateFlow<List<Emotion>> = _emotions.asStateFlow()
-    val notes: StateFlow<List<Note>> = _notes.asStateFlow()
+    val notes: StateFlow<List<NoteWithEmotion>> = _notes.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -52,13 +53,14 @@ class MoodViewModel @Inject constructor(
         emotionId: Int?, event: String?
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            moodRepository.getAllNotes()
+            moodRepository.getNotesWithEmotions()
                 .map {
-                    it.filter { note ->
-                        ((emotionId == null && note.emotionId in _emotionIdList)
-                                || (emotionId != null && note.emotionId == emotionId)) &&
-                        (note.date > (dateFrom ?: 0L) && note.date < (dateTo ?: 9999L)) &&
-                        note.event.contains((event ?: ""))
+                    it.filter { noteEmotion ->
+                        ((emotionId == null && noteEmotion.emotion.id in _emotionIdList)
+                                || (emotionId != null && noteEmotion.emotion.id == emotionId)) &&
+                                (noteEmotion.note.date > (dateFrom
+                                    ?: 0L) && noteEmotion.note.date < (dateTo ?: 9999L)) &&
+                                noteEmotion.note.event.contains((event ?: ""))
                     }
                 }
                 .collect {
@@ -76,7 +78,7 @@ class MoodViewModel @Inject constructor(
     fun getNote(id: Int, callback: (Note) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val note = moodRepository.getNote(id)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 callback(note)
             }
         }

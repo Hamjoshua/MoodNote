@@ -34,4 +34,8 @@ class MoodRepository @Inject constructor(
     ): Flow<List<Note>> {
         return noteDao.getNotesByFilter(dateFrom, dateTo, emotionIdList, event)
     }
+
+    fun getNotesWithEmotions() : Flow<List<NoteWithEmotion>>{
+        return noteDao.getNotesWithEmotions()
+    }
 }
