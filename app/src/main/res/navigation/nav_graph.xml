@@ -8,7 +8,11 @@
         android:id="@+id/mainFragment"
         android:name="com.example.moodnote.ui.MainFragment"
         android:label="Главное меню"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_noteFormFragment"
+            app:destination="@id/noteFormFragment" />
+    </fragment>
     <fragment
         android:id="@+id/noteFormFragment"
         android:name="com.example.moodnote.ui.NoteFormFragment"

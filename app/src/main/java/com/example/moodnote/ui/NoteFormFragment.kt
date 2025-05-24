@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.moodnote.R
 import com.example.moodnote.data.Note
 import com.example.moodnote.databinding.FragmentNoteFormBinding
+import com.example.moodnote.utils.toDateString
 import com.example.moodnote.utils.toLongDate
 import com.example.moodnote.vm.MoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,11 +31,17 @@ class NoteFormFragment : Fragment() {
     private lateinit var binding: FragmentNoteFormBinding
     private val noEmotionSelectedItem = "Эмоция не выбрана"
     private var noteId: Long? = null
+    private var note : Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             noteId = it.getLong(NOTE_ID)
+            if(noteId != -1L){
+                viewModel.getNote(noteId!!) {
+                    note = it
+                }
+            }
         }
     }
 
@@ -51,6 +58,9 @@ class NoteFormFragment : Fragment() {
 
         initSpinner()
         initButtons()
+        note?.let {
+            initFileds()
+        }
     }
 
     private fun initSpinner() {
@@ -78,6 +88,13 @@ class NoteFormFragment : Fragment() {
         } else {
             return position - 1
         }
+    }
+
+    private fun initFileds(){
+        binding.eventEditText.setText(note!!.event)
+        binding.emotionSpinner.setSelection(note!!.emotionId + 1)
+        binding.reasonEditText.setText(note!!.reason)
+        binding.dateButton.text = note!!.date.toDateString()
     }
 
     private fun initButtons() {
@@ -110,8 +127,11 @@ class NoteFormFragment : Fragment() {
                 .show()
         } else {
             val formatedDate = date.toLongDate()
-            val note: Note = Note(0, emotionId, event, reason, formatedDate!!)
-            viewModel.addOrEditNewNote(note)
+            if(note == null){
+                note = Note(0, emotionId, event, reason, formatedDate!!)
+            }
+
+            viewModel.addOrEditNewNote(note!!)
             Toast.makeText(requireContext(), "Новая запись создана", Toast.LENGTH_SHORT).show()
             toMainFragment()
         }

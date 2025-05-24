@@ -35,6 +35,7 @@ data class Note(
     val date: Long
 )
 
+
 data class NoteWithEmotion(
     @Embedded val note: Note,
     @Relation(

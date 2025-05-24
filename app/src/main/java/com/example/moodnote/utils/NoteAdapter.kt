@@ -28,7 +28,7 @@ class NoteAdapter(val noteClick: OnNoteElementClick) :
         val note = currentList[position]
         holder.binding.emotionShowerText.text = note.emotion.getEmojiFromUnicode()
         holder.binding.eventShowerText.text = note.note.event
-        holder.binding.dateShowerText.text = note.note.date.toString()
+        holder.binding.dateShowerText.text = note.note.date.toDateString()
         holder.binding.root.setOnClickListener {
             noteClick.onClick(note.note)
         }

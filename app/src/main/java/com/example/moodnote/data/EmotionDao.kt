@@ -12,7 +12,7 @@ interface EmotionDao {
     @Query("Select * from Emotion")
     fun getAllEmotions() : Flow<List<Emotion>>
 
-    @Query("Select * from Emotion where id = (:id)")
+    @Query("Select * from Emotion where id = :id")
     fun getEmotion(id: Int) : Emotion
 
     @Insert(onConflict = REPLACE)

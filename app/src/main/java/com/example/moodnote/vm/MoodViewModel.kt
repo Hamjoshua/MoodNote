@@ -1,5 +1,6 @@
 package com.example.moodnote.vm
 
+import android.util.Log
 import android.view.animation.Transformation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -55,15 +56,16 @@ class MoodViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             moodRepository.getNotesWithEmotions()
                 .map {
+                    Log.d("NotesVM-before", it.toString())
                     it.filter { noteEmotion ->
-                        ((emotionId == null && noteEmotion.emotion.id in _emotionIdList)
-                                || (emotionId != null && noteEmotion.emotion.id == emotionId)) &&
-                                (noteEmotion.note.date > (dateFrom
-                                    ?: 0L) && noteEmotion.note.date < (dateTo ?: 9999L)) &&
-                                noteEmotion.note.event.contains((event ?: ""))
+                        (emotionId == null || emotionId == noteEmotion.emotion.id) &&
+                                (dateFrom == null || noteEmotion.note.date >= dateFrom) &&
+                                (dateTo == null || noteEmotion.note.date <= dateTo) &&
+                                (event == "" || noteEmotion.note.event.contains(event ?: ""))
                     }
                 }
                 .collect {
+                    Log.d("NotesVM-after", it.toString())
                     _notes.value = it
                 }
         }
@@ -75,7 +77,7 @@ class MoodViewModel @Inject constructor(
         }
     }
 
-    fun getNote(id: Int, callback: (Note) -> Unit) {
+    fun getNote(id: Long, callback: (Note) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val note = moodRepository.getNote(id)
             withContext(Dispatchers.Main) {
