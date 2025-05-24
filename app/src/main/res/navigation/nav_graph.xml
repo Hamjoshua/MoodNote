@@ -18,6 +18,9 @@
             android:name="noteId"
             app:argType="long"
             android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_noteFormFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"

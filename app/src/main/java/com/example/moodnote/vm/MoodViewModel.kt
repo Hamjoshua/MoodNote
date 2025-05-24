@@ -10,6 +10,7 @@ import com.example.moodnote.data.Emotion
 import com.example.moodnote.data.MoodRepository
 import com.example.moodnote.data.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,9 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.security.auth.callback.Callback
 
 @HiltViewModel
 class MoodViewModel @Inject constructor(
@@ -41,21 +44,21 @@ class MoodViewModel @Inject constructor(
     }
 
     fun clearFilter() {
-        updateNotes(null, null, _emotionIdList, null)
+        updateNotes(null, null, null, null)
     }
 
     fun updateNotes(
         dateFrom: Long?, dateTo: Long?,
-        emotionIdList: List<Int>, event: String?
+        emotionId: Int?, event: String?
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             moodRepository.getAllNotes()
                 .map {
-                    it.filter {
-                        note ->
-                        note.emotionId in _emotionIdList &&
-                                (note.date > (dateFrom ?: 0L) && note.date < (dateTo ?: 9999L)) &&
-                                note.event.contains((event ?: ""))
+                    it.filter { note ->
+                        ((emotionId == null && note.emotionId in _emotionIdList)
+                                || (emotionId != null && note.emotionId == emotionId)) &&
+                        (note.date > (dateFrom ?: 0L) && note.date < (dateTo ?: 9999L)) &&
+                        note.event.contains((event ?: ""))
                     }
                 }
                 .collect {
@@ -65,14 +68,23 @@ class MoodViewModel @Inject constructor(
     }
 
     fun addOrEditNewNote(note: Note) {
-        moodRepository.insertOrReplaceNote(note)
+        viewModelScope.launch(Dispatchers.IO) {
+            moodRepository.insertOrReplaceNote(note)
+        }
     }
 
-    fun getNote(id: Int): Note {
-        return moodRepository.getNote(id)
+    fun getNote(id: Int, callback: (Note) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val note = moodRepository.getNote(id)
+            withContext(Dispatchers.Main){
+                callback(note)
+            }
+        }
     }
 
     fun removeNote(note: Note) {
-        moodRepository.deleteNote(note)
+        viewModelScope.launch(Dispatchers.IO) {
+            moodRepository.deleteNote(note)
+        }
     }
 }
