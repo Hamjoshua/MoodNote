@@ -80,9 +80,9 @@ class MoodViewModel @Inject constructor(
     fun getNote(id: Long, callback: (Note) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val note = moodRepository.getNote(id)
-            withContext(Dispatchers.Main) {
-                callback(note)
-            }
+
+            callback(note)
+
         }
     }
 

@@ -86,15 +86,18 @@ class NoteFormFragment : Fragment() {
         if (position == 0) {
             return null
         } else {
-            return position - 1
+            return position
         }
     }
 
     private fun initFileds(){
         binding.eventEditText.setText(note!!.event)
-        binding.emotionSpinner.setSelection(note!!.emotionId + 1)
         binding.reasonEditText.setText(note!!.reason)
         binding.dateButton.text = note!!.date.toDateString()
+        // Загрузка эмоции после того, как она применилась
+        binding.emotionSpinner.post {
+            binding.emotionSpinner.setSelection(note!!.emotionId + 1)
+        }
     }
 
     private fun initButtons() {
@@ -129,6 +132,11 @@ class NoteFormFragment : Fragment() {
             val formatedDate = date.toLongDate()
             if(note == null){
                 note = Note(0, emotionId, event, reason, formatedDate!!)
+            } else {
+                note!!.emotionId = emotionId
+                note!!.event = event
+                note!!.date = formatedDate!!
+                note!!.reason = reason
             }
 
             viewModel.addOrEditNewNote(note!!)

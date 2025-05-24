@@ -1,6 +1,7 @@
 package com.example.moodnote.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.moodnote.utils.OnNoteElementClick
 import com.example.moodnote.vm.MoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -41,12 +43,16 @@ class MainFragment : Fragment(), OnNoteElementClick {
 
     private fun initRView() {
         val noteAdapter : NoteAdapter = NoteAdapter(this)
-        viewModel.notes.onEach {
-            noteAdapter.submitList(it)
-        }.launchIn(lifecycleScope)
 
         binding.noteList.layoutManager = LinearLayoutManager(requireContext())
         binding.noteList.adapter = noteAdapter
+
+        lifecycleScope.launch {
+            viewModel.notes.collectLatest {
+                noteAdapter.submitList(it)
+                Log.d("NotesFlow", "Updated ${it.size} notes")
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

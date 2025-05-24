@@ -29,10 +29,10 @@ data class Emotion(
 ])
 data class Note(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val emotionId: Int,
-    val event: String,
-    val reason: String,
-    val date: Long
+    var emotionId: Int,
+    var event: String,
+    var reason: String,
+    var date: Long
 )
 
 
