@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moodnote.R
@@ -26,7 +29,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainFragment : Fragment(), OnNoteElementClick {
     private lateinit var binding : FragmentMainBinding
-    private val viewModel: MoodViewModel by viewModels()
+    private val viewModel: MoodViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +51,11 @@ class MainFragment : Fragment(), OnNoteElementClick {
         binding.noteList.adapter = noteAdapter
 
         lifecycleScope.launch {
-            viewModel.notes.collectLatest {
-                noteAdapter.submitList(it)
-                Log.d("NotesFlow", "Updated ${it.size} notes")
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.notes.collect {
+                    noteAdapter.submitList(it)
+                    Log.d("NotesFlow", "Updated ${it.size} notes")
+                }
             }
         }
     }
@@ -59,6 +64,7 @@ class MainFragment : Fragment(), OnNoteElementClick {
         super.onViewCreated(view, savedInstanceState)
 
         initRView()
+
     }
 
     override fun onClick(note: Note) {

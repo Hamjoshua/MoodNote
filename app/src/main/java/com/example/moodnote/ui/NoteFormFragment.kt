@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,7 +28,7 @@ private const val NOTE_ID = "noteId"
 
 @AndroidEntryPoint
 class NoteFormFragment : Fragment() {
-    private val viewModel: MoodViewModel by viewModels()
+    private val viewModel: MoodViewModel by activityViewModels()
     private lateinit var binding: FragmentNoteFormBinding
     private val noEmotionSelectedItem = "Эмоция не выбрана"
     private var noteId: Long? = null
@@ -96,7 +97,7 @@ class NoteFormFragment : Fragment() {
         binding.dateButton.text = note!!.date.toDateString()
         // Загрузка эмоции после того, как она применилась
         binding.emotionSpinner.post {
-            binding.emotionSpinner.setSelection(note!!.emotionId + 1)
+            binding.emotionSpinner.setSelection(note!!.emotionId)
         }
     }
 
@@ -124,6 +125,7 @@ class NoteFormFragment : Fragment() {
         val emotionId: Int? = getEmotionFromSpinner()
         val event: String = binding.eventEditText.text.toString()
         val reason: String = binding.reasonEditText.text.toString()
+        var completeToastText = "Новая запись создана"
 
         if (date == "" || event == "" || reason == "" || emotionId == null) {
             Toast.makeText(requireContext(), "Не все поля заполнены", Toast.LENGTH_SHORT)
@@ -133,6 +135,7 @@ class NoteFormFragment : Fragment() {
             if(note == null){
                 note = Note(0, emotionId, event, reason, formatedDate!!)
             } else {
+                completeToastText = "Запись успешно редактирована"
                 note!!.emotionId = emotionId
                 note!!.event = event
                 note!!.date = formatedDate!!
@@ -140,15 +143,15 @@ class NoteFormFragment : Fragment() {
             }
 
             viewModel.addOrEditNewNote(note!!)
-            Toast.makeText(requireContext(), "Новая запись создана", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), completeToastText, Toast.LENGTH_SHORT).show()
             toMainFragment()
         }
     }
 
     private fun toMainFragment(){
-        val direction = NoteFormFragmentDirections.actionNoteFormFragmentToMainFragment()
 
         val navController = parentFragment?.findNavController()
-        navController?.navigate(direction)
+        navController?.popBackStack()
+
     }
 }
