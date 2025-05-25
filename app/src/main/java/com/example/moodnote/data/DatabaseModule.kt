@@ -19,14 +19,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-    @Provides
-    @Singleton
-    fun provideAlarmHelper(
-        @ApplicationContext context: Context // Контекст приложения
-    ): AlarmHelper {
-        return AlarmHelper(context)
-    }
-
     @Volatile private var INSTANCE: MoodDatabase? = null
 
     fun getInstance(context: Context): MoodDatabase =

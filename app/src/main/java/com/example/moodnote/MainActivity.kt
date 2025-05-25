@@ -1,16 +1,7 @@
 package com.example.moodnote
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
-import androidx.core.app.NotificationCompat
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -65,8 +56,6 @@ class MainActivity : AppCompatActivity() {
 
         alarmHelper.cancelAlarm();
         alarmHelper.scheduleNotification(this.applicationContext)
-//        alarmHelper.showNotificationNow(this.applicationContext);
-//        alarmHelper.showNotificationNow();
     }
 
 

@@ -11,19 +11,25 @@ import android.util.Log
 import androidx.core.app.AlarmManagerCompat.canScheduleExactAlarms
 import androidx.core.app.NotificationCompat
 import com.example.moodnote.R
+import com.example.moodnote.data.AppPreferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
+import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class AlarmHelper(private val _context: Context) {
-    // Константы
+class AlarmHelper @Inject constructor(
+    @ApplicationContext private val _context: Context,
+    private val appPreferences: AppPreferences) {
+
     companion object {
         const val ALARM_REQUEST_CODE = 100
-        const val NOTIFICATION_DELAY_MS = 5_000L // 1 минута
+        private const val HOURS_THRESHOLD = 21
+        const val NOTIFICATION_DELAY_MS = 60_000L * 60 * HOURS_THRESHOLD
     }
 
     fun scheduleNotification(context: Context = _context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
         if (canScheduleExactAlarms(alarmManager)) {
             Log.e("AlarmHelper", "AlarmManager availible")
         } else {
@@ -54,14 +60,18 @@ class AlarmHelper(private val _context: Context) {
         Log.d("AlarmHelper", "Notification scheduled")
     }
 
-    // Отмена уведомления
     fun cancelAlarm(context:Context = _context) {
+        // обновляем время визита
+        appPreferences.saveLastVisitTime()
+
+        // отменяем alarm
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val pendingIntent = createPendingIntent(context)//, PendingIntent.FLAG_NO_CREATE
 
         pendingIntent?.let {
             alarmManager.cancel(it)
             it.cancel()
+            Log.d("AlarmHelper","alarm canceled")
         }
     }
 
@@ -83,7 +93,7 @@ class AlarmHelper(private val _context: Context) {
             PendingIntent.getBroadcast(
                 context,
                 // Уникальный requestCode (используем хеш времени)
-                System.currentTimeMillis().toInt() and 0xffff,
+                ALARM_REQUEST_CODE,//System.currentTimeMillis().toInt() and 0xffff,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -121,6 +131,49 @@ class AlarmHelper(private val _context: Context) {
             .build()
 
         notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
+
+    fun showNotification(context: Context = _context) {
+        // 1. Создаем NotificationManager
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
+                as NotificationManager
+
+        // 2. Создаем канал (обязательно для Android 8.0+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "instant_channel",
+                "Уведомления с задержкой",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Канал для уведомлений с задержкой"
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // 3. Создаем само уведомление
+        val notification = NotificationCompat.Builder(context, "instant_channel")
+            .setContentTitle("Напоминание")
+            .setContentText("Вы давно не оставляли эмоцию")
+            .setSmallIcon(R.drawable.ic_launcher_background) // Обязательно!
+            .setPriority(NotificationCompat.PRIORITY_MAX) // Для Android 7.1 и ниже
+            .setAutoCancel(true)
+            .build()
+
+        // 4. Показываем уведомление
+        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
+
+    fun checkAndShowNotification() {
+        Log.e("AlarmHelper", " checkAndShowNotification")
+        val lastVisitTime = appPreferences.getLastVisitTime()
+        val currentTime = System.currentTimeMillis()
+        Log.e("AlarmHelper", " diff ms ${currentTime - lastVisitTime}")
+        val hoursPassed = (currentTime - lastVisitTime) / (1000 * 60 * 60)
+
+        if (hoursPassed >= HOURS_THRESHOLD) {
+            showNotification()
+        }
     }
 
 }
