@@ -13,7 +13,9 @@ import com.example.moodnote.data.Note
 import com.example.moodnote.data.NoteWithEmotion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -29,10 +31,10 @@ class MoodViewModel @Inject constructor(
     private val moodRepository: MoodRepository
 ) : ViewModel() {
     private val _emotions: MutableStateFlow<List<Emotion>> = MutableStateFlow(emptyList())
-    private val _notes: MutableStateFlow<List<NoteWithEmotion>> = MutableStateFlow(emptyList())
+    private val _notes: MutableSharedFlow<List<NoteWithEmotion>> = MutableSharedFlow(replay = 0)
     private var _emotionIdList: List<Int> = emptyList()
     val emotions: StateFlow<List<Emotion>> = _emotions.asStateFlow()
-    val notes: StateFlow<List<NoteWithEmotion>> = _notes.asStateFlow()
+    val notes: SharedFlow<List<NoteWithEmotion>> = _notes
 
     init {
         viewModelScope.launch {
@@ -41,8 +43,6 @@ class MoodViewModel @Inject constructor(
                 _emotionIdList = it.map { it.id }
             }
         }
-
-        clearFilter()
     }
 
     fun clearFilter() {
@@ -66,7 +66,7 @@ class MoodViewModel @Inject constructor(
                 }
                 .collect {
                     Log.d("NotesVM-after", it.toString())
-                    _notes.value = it
+                    _notes.emit(it)
                 }
         }
     }
