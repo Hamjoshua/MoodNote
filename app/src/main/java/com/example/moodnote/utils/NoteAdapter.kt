@@ -32,11 +32,15 @@ class NoteAdapter(val noteClick: OnNoteElementClick) :
         holder.binding.root.setOnClickListener {
             noteClick.onClick(note.note)
         }
+        holder.binding.removeNoteElementButton.setOnClickListener{
+            noteClick.onRemoveClick(note.note)
+        }
     }
 }
 
 interface OnNoteElementClick {
     fun onClick(note: Note)
+    fun onRemoveClick(note: Note)
 }
 
 class NoteDiffCallback : DiffUtil.ItemCallback<NoteWithEmotion>() {

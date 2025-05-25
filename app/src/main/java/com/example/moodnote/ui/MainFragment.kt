@@ -1,29 +1,25 @@
 package com.example.moodnote.ui
 
 import android.os.Bundle
+import android.security.ConfirmationAlreadyPresentingException
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moodnote.R
 import com.example.moodnote.data.Note
 import com.example.moodnote.databinding.FragmentMainBinding
+import com.example.moodnote.utils.ConfirmationDialog
 import com.example.moodnote.utils.NoteAdapter
 import com.example.moodnote.utils.OnNoteElementClick
 import com.example.moodnote.vm.MoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -74,5 +70,11 @@ class MainFragment : Fragment(), OnNoteElementClick {
 
         val navController = parentFragment?.findNavController()
         navController?.navigate(direction)
+    }
+
+    override fun onRemoveClick(note: Note) {
+        ConfirmationDialog("Вы уверены, что хотите удалить эту запись?") {
+            viewModel.removeNote(note)
+        }.show(parentFragmentManager, "CONFIRMATION_DIALOG")
     }
 }

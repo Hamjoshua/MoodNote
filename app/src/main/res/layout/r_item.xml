@@ -17,22 +17,35 @@
         />
     <TextView
         app:layout_constraintLeft_toRightOf="@id/emotionShowerText"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/eventShowerText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:lines="2"
         android:textSize="25sp"
-        android:text="event"
+        android:ellipsize="end"
+        android:text="eventeventeventevent eventevent"
         android:layout_height="wrap_content">
 
     </TextView>
     <TextView
         android:id="@+id/dateShowerText"
+        app:layout_constraintTop_toBottomOf="@id/eventShowerText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/emotionShowerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="09/09/2009 9:09">
-
     </TextView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/removeNoteElementButton"
+        android:src="@drawable/baseline_cancel_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

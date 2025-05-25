@@ -1,28 +1,26 @@
 package com.example.moodnote.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.moodnote.R
 import com.example.moodnote.data.Note
 import com.example.moodnote.databinding.FragmentNoteFormBinding
+import com.example.moodnote.utils.ConfirmationDialog
 import com.example.moodnote.utils.toDateString
 import com.example.moodnote.utils.toLongDate
 import com.example.moodnote.vm.MoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import java.util.Calendar
-import java.util.Collections.addAll
 
 private const val NOTE_ID = "noteId"
 
@@ -32,13 +30,13 @@ class NoteFormFragment : Fragment() {
     private lateinit var binding: FragmentNoteFormBinding
     private val noEmotionSelectedItem = "Эмоция не выбрана"
     private var noteId: Long? = null
-    private var note : Note? = null
+    private var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             noteId = it.getLong(NOTE_ID)
-            if(noteId != -1L){
+            if (noteId != -1L) {
                 viewModel.getNote(noteId!!) {
                     note = it
                 }
@@ -91,7 +89,7 @@ class NoteFormFragment : Fragment() {
         }
     }
 
-    private fun initFileds(){
+    private fun initFileds() {
         binding.eventEditText.setText(note!!.event)
         binding.reasonEditText.setText(note!!.reason)
         binding.dateButton.text = note!!.date.toDateString()
@@ -118,6 +116,14 @@ class NoteFormFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             saveNote()
         }
+
+        if (note == null) {
+            binding.removeNoteElementButton.isVisible = false
+        } else {
+            binding.removeNoteElementButton.setOnClickListener {
+                removeNote()
+            }
+        }
     }
 
     private fun saveNote() {
@@ -132,7 +138,7 @@ class NoteFormFragment : Fragment() {
                 .show()
         } else {
             val formatedDate = date.toLongDate()
-            if(note == null){
+            if (note == null) {
                 note = Note(0, emotionId, event, reason, formatedDate!!)
             } else {
                 completeToastText = "Запись успешно редактирована"
@@ -148,8 +154,14 @@ class NoteFormFragment : Fragment() {
         }
     }
 
-    private fun toMainFragment(){
+    private fun removeNote() {
+        ConfirmationDialog("Вы уверены, что хотите удалить эту запись?") {
+            viewModel.removeNote(note!!)
+            toMainFragment()
+        }.show(parentFragmentManager, "CONFIRMATION_DIALOG")
+    }
 
+    private fun toMainFragment() {
         val navController = parentFragment?.findNavController()
         navController?.popBackStack()
 
