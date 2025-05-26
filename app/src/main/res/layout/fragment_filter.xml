@@ -7,11 +7,14 @@
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <EditText
+            android:minHeight="50dp"
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:inputType="text"
             android:id="@+id/eventEditText"
             android:layout_width="match_parent"
@@ -24,6 +27,7 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:textAppearance="@style/TextAppearance.MoodNote.Body"
                 android:hint="01/01/2022"
                 android:id="@+id/dateFromButton"
                 android:layout_weight="1"
@@ -32,6 +36,7 @@
                 style="@style/Widget.AppCompat.Spinner">
             </Button>
             <Button
+                android:textAppearance="@style/TextAppearance.MoodNote.Body"
                 android:hint="25/01/2022"
                 android:layout_weight="1"
                 android:id="@+id/dateToButton"
@@ -44,17 +49,22 @@
 
 
         <Spinner
+            android:minHeight="50dp"
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:id="@+id/emotionSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Button
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:id="@+id/applyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save" />
 
         <Button
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:id="@+id/clearFilterButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
