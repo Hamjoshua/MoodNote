@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MoodRepository @Inject constructor(
-    private val noteDao: NoteDao,
-    private val emotionDao: EmotionDao
+    protected val noteDao: NoteDao,
+    protected val emotionDao: EmotionDao
 ) {
     fun getAllNotes(): Flow<List<Note>> {
         return noteDao.getAllNotes()
@@ -32,7 +32,22 @@ class MoodRepository @Inject constructor(
         dateFrom: Long?, dateTo: Long?,
         emotionIdList: List<Int>, event: String?
     ): Flow<List<Note>> {
+
         return noteDao.getNotesByFilter(dateFrom, dateTo, emotionIdList, event)
+    }
+
+    fun getDistinctEmotionIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>?,
+        event: String?
+    ): Flow<List<Int>> {
+        val list = emotionIdList ?: emptyList()
+        return noteDao.getDistinctEmotionIdsByFilter(dateFrom, dateTo, list, list.size, event)
+    }
+
+    fun getLastNotes(numberNotes:Long): List<Note> {
+        return noteDao.getLastNotes(numberNotes)
     }
 
     fun getNotesWithEmotions() : Flow<List<NoteWithEmotion>>{

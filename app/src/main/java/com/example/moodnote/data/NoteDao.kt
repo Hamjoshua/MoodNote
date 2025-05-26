@@ -29,6 +29,27 @@ interface NoteDao {
                          emotionIdList: List<Int>,
                          event: String?) : Flow<List<Note>>
 
+    @Query("""
+    SELECT DISTINCT emotionId FROM Note WHERE
+    (:dateFrom IS NULL OR date > :dateFrom) AND
+    (:dateTo IS NULL OR date < :dateTo) AND
+    (:emotionIdListSize = 0 OR emotionId IN (:emotionIdList)) AND
+    (:event IS NULL OR event LIKE :event)
+""")
+    fun getDistinctEmotionIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>,
+        emotionIdListSize: Int,
+        event: String?
+    ): Flow<List<Int>>
+
+    @Query(
+    "SELECT * FROM Note" +
+    " ORDER BY date DESC" +
+    " LIMIT :countNotes")
+    fun getLastNotes(countNotes: Long): List<Note>
+
     @Delete
     fun deleteNote(note: Note)
 

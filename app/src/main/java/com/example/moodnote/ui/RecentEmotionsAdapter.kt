@@ -4,24 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moodnote.R
 import com.example.moodnote.data.Emotion
-import com.example.moodnote.data.EmotionDao
 import com.example.moodnote.data.Note
+import com.example.moodnote.vm.ExtendedMoodViewModel
 import com.example.moodnote.vm.MoodViewModel
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-data class EmotionData(
+data class EmotionData (
     val emotionType: String, // "Happy", "Sad", "Angry"
     var date: String,       // "2023-10-01"
     val note: String? = null // Опциональная заметка
@@ -29,20 +23,19 @@ data class EmotionData(
 
 class RecentEmotionsAdapter(
     private val lifecycleOwner: LifecycleOwner,
-    private val viewModel: MoodViewModel
+    private val viewModel: ExtendedMoodViewModel
 ) :
     RecyclerView.Adapter<RecentEmotionsAdapter.ViewHolder>() {
 
-    private var _listNotes: List<Note> = emptyList()
+     var _listNotes: List<Note> = emptyList()
+
+
 
     init {
-        lifecycleOwner.lifecycleScope.launch {
-            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.notes.collect { newEmotions ->
-                    _listNotes = newEmotions
-                }
-            }
+        viewModel.getLastNotes(2) { notes ->
+            _listNotes = notes // Update _listNotes with the received notes
         }
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
