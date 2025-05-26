@@ -7,6 +7,8 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:backgroundTint="@color/md_theme_secondary"
+        app:titleTextColor="@color/md_theme_onSecondary"
         app:title="@string/app_name"
         app:titleTextAppearance="@style/TextAppearance.MoodNote.Headline"
         app:layout_constraintTop_toTopOf="parent"
@@ -15,8 +17,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -29,6 +30,7 @@
         app:navGraph="@navigation/nav_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:backgroundTint="@color/md_theme_secondaryContainer"
         app:menu="@menu/main_menu"
         android:id="@+id/navigation"
         android:layout_width="match_parent"

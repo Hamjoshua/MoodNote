@@ -7,68 +7,77 @@
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
-        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <EditText
-            android:minHeight="50dp"
-            android:textAppearance="@style/TextAppearance.MoodNote.Body"
-            android:inputType="text"
             android:id="@+id/eventEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Событие" />
+            android:hint="Событие"
+            android:inputType="text"
+            android:minHeight="50dp"
+            android:textAppearance="@style/TextAppearance.MoodNote.Body" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <Button
-                android:textAppearance="@style/TextAppearance.MoodNote.Body"
-                android:hint="01/01/2022"
                 android:id="@+id/dateFromButton"
-                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.Spinner">
-            </Button>
+                android:layout_weight="1"
+                android:hint="01/01/2022"
+                android:textAppearance="@style/TextAppearance.MoodNote.Body"></Button>
+
             <Button
-                android:textAppearance="@style/TextAppearance.MoodNote.Body"
-                android:hint="25/01/2022"
-                android:layout_weight="1"
                 android:id="@+id/dateToButton"
+                style="@style/Widget.AppCompat.Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.Spinner">
-            </Button>
+                android:layout_weight="1"
+                android:hint="25/01/2022"
+                android:textAppearance="@style/TextAppearance.MoodNote.Body"></Button>
 
         </LinearLayout>
 
 
         <Spinner
-            android:minHeight="50dp"
-            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:id="@+id/emotionSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:textAppearance="@style/TextAppearance.MoodNote.Body" />
 
-        <Button
-            android:textAppearance="@style/TextAppearance.MoodNote.Body"
-            android:id="@+id/applyButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save" />
+            android:orientation="horizontal">
+            <Button
+                android:backgroundTint="@color/md_theme_tertiary"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:textAppearance="@style/TextAppearance.MoodNote.Body"
+                android:id="@+id/applyButton"
+                android:layout_weight="5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Save" />
 
-        <Button
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
-            android:textAppearance="@style/TextAppearance.MoodNote.Body"
-            android:id="@+id/clearFilterButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Clear" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:backgroundTint="@color/md_theme_tertiaryContainer"
+                android:id="@+id/clearFilterButton"
+                android:src="@drawable/baseline_filter_alt_off_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+        </LinearLayout>
 
 
     </LinearLayout>

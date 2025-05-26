@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.NoteFormFragment"
+    android:padding="25dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -12,24 +13,28 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:textAppearance="@style/TextAppearance.MoodNote.Label"
             android:text="Эмоция"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
 
         <Spinner
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:minHeight="50sp"
             android:id="@+id/emotionSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
+            android:textAppearance="@style/TextAppearance.MoodNote.Label"
             android:text="Событие"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
 
         <EditText
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:inputType="text"
             android:minHeight="50sp"
             android:hint="Что это было?"
@@ -39,17 +44,19 @@
         </EditText>
 
         <TextView
+            android:textAppearance="@style/TextAppearance.MoodNote.Label"
             android:text="Причина"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
         <EditText
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
+            style="@style/TextAppearance.AppCompat.Large"
             android:inputType="textMultiLine"
             android:gravity="top|start"
             android:lines="8"
             android:minLines="6"
             android:maxLines="14"
-            style="@style/TextAppearance.AppCompat.Large"
             android:id="@+id/reasonEditText"
             android:hint="Почему вы испытали эту эмоцию?"
             android:minHeight="200sp"
@@ -58,11 +65,13 @@
         </EditText>
 
         <TextView
+            android:textAppearance="@style/TextAppearance.MoodNote.Label"
             android:text="Дата"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
         <Button
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:id="@+id/dateButton"
             style="@style/Widget.AppCompat.Spinner"
             android:layout_width="match_parent"
@@ -72,6 +81,7 @@
         </Button>
 
         <Button
+            android:textAppearance="@style/TextAppearance.MoodNote.Body"
             android:text="Сохранить"
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
@@ -80,6 +90,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:backgroundTint="@color/md_theme_errorContainer"
         android:layout_margin="20sp"
         android:id="@+id/removeNoteElementButton"
         android:src="@drawable/baseline_cancel_24"

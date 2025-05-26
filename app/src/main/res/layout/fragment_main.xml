@@ -18,6 +18,7 @@
             tools:layout="@layout/fragment_filter" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:padding="25dp"
             android:id="@+id/noteList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

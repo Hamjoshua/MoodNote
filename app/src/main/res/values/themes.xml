@@ -59,6 +59,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TextAppearance.MoodNote.Label" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/firasans</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="TextAppearance.MoodNote.Body" parent="MaterialAlertDialog.Material3.Body.Text">
         <item name="fontFamily">@font/firasans</item>
         <item name="android:textSize">14sp</item>
