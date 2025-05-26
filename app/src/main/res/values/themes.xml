@@ -1,8 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MoodNote" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorError">@color/error</item>
+    </style>
+
+    <style name="TextAppearance.MoodNote.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.MoodNote.Body" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="fontFamily">@font/firasans</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="Theme.MoodNote" parent="Base.Theme.MoodNote" />

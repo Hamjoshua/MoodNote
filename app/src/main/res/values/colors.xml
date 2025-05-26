@@ -2,4 +2,18 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#4c662b</color>
+    <color name="onPrimary">#ffffff</color>
+    <color name="secondary">#586249</color>
+    <color name="onSecondary">#ffffff</color>
+    <color name="tertiary">#386663</color>
+    <color name="error">#ba1a1a</color>
+
+    <color name="primary_night">#b1d18a</color>
+    <color name="onPrimary_night">#1f3701</color>
+    <color name="secondary_night">#bfcbad</color>
+    <color name="onSecondary_night">#2a331e</color>
+    <color name="tertiary_night">#a0d0cb</color>
+    <color name="error_night">#ffb4ab</color>
 </resources>
