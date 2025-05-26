@@ -23,12 +23,12 @@ import javax.inject.Inject
 import javax.security.auth.callback.Callback
 
 @HiltViewModel
-class MoodViewModel @Inject constructor(
-    private val moodRepository: MoodRepository
+open class MoodViewModel @Inject constructor(
+    protected val moodRepository: MoodRepository
 ) : ViewModel() {
-    private val _emotions: MutableStateFlow<List<Emotion>> = MutableStateFlow(emptyList())
-    private val _notes: MutableStateFlow<List<Note>> = MutableStateFlow(emptyList())
-    private var _emotionIdList: List<Int> = emptyList()
+    protected val _emotions: MutableStateFlow<List<Emotion>> = MutableStateFlow(emptyList())
+    protected val _notes: MutableStateFlow<List<Note>> = MutableStateFlow(emptyList())
+    protected var _emotionIdList: List<Int> = emptyList()
     val emotions: StateFlow<List<Emotion>> = _emotions.asStateFlow()
     val notes: StateFlow<List<Note>> = _notes.asStateFlow()
 

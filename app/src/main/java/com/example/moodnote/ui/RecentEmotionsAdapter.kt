@@ -1,4 +1,81 @@
 package com.example.moodnote.ui
 
-class RecentEmotionsAdapter {
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView
+import com.example.moodnote.R
+import com.example.moodnote.data.Emotion
+import com.example.moodnote.data.EmotionDao
+import com.example.moodnote.data.Note
+import com.example.moodnote.vm.MoodViewModel
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+data class EmotionData(
+    val emotionType: String, // "Happy", "Sad", "Angry"
+    var date: String,       // "2023-10-01"
+    val note: String? = null // Опциональная заметка
+)
+
+class RecentEmotionsAdapter(
+    private val lifecycleOwner: LifecycleOwner,
+    private val viewModel: MoodViewModel
+) :
+    RecyclerView.Adapter<RecentEmotionsAdapter.ViewHolder>() {
+
+    private var _listNotes: List<Note> = emptyList()
+
+    init {
+        lifecycleOwner.lifecycleScope.launch {
+            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.notes.collect { newEmotions ->
+                    _listNotes = newEmotions
+                }
+            }
+        }
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(emotion: EmotionData) {
+            itemView.findViewById<TextView>(R.id.emotionType).text = emotion.emotionType
+            itemView.findViewById<TextView>(R.id.emotionDate).text = emotion.date
+            itemView.findViewById<TextView>(R.id.emotionNote).text = emotion.note
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_emotion, parent, false)
+        return ViewHolder(view)
+    }
+
+    fun getEmojiFromUnicode(emotion: Emotion): String {
+        return String(Character.toChars(emotion.emojiUnicode))
+    }
+
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val note = _listNotes[position]
+        val listEmotions = viewModel.emotions.value;
+        val emotion = listEmotions.find { it.id == note.emotionId } ?: Emotion.DEFAULT
+
+        val date = Date(note.date)
+        val format = SimpleDateFormat("mm-dd", Locale.getDefault())
+        val dateString = format.format(date)
+
+        var emotionData = EmotionData(getEmojiFromUnicode(emotion),dateString,note.reason)
+        holder.bind(emotionData)
+    }
+
+    override fun getItemCount() = _listNotes.size
 }
