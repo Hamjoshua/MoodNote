@@ -1,9 +1,11 @@
 package com.example.moodnote.data
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 @Entity
 data class Emotion(
@@ -37,10 +39,20 @@ data class Emotion(
 ])
 data class Note(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val emotionId: Int,
-    val event: String,
-    val reason: String,
-    val date: Long
+    var emotionId: Int,
+    var event: String,
+    var reason: String,
+    var date: Long
+)
+
+
+data class NoteWithEmotion(
+    @Embedded val note: Note,
+    @Relation(
+        parentColumn = "emotionId",
+        entityColumn = "id"
+    )
+    val emotion: Emotion
 )
 
 val defaultEmojis = listOf(

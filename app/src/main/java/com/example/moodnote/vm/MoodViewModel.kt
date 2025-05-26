@@ -1,5 +1,6 @@
 package com.example.moodnote.vm
 
+import android.util.Log
 import android.view.animation.Transformation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,9 +10,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.moodnote.data.Emotion
 import com.example.moodnote.data.MoodRepository
 import com.example.moodnote.data.Note
+import com.example.moodnote.data.NoteWithEmotion
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -23,14 +27,14 @@ import javax.inject.Inject
 import javax.security.auth.callback.Callback
 
 @HiltViewModel
-open class MoodViewModel @Inject constructor(
-    protected val moodRepository: MoodRepository
+class MoodViewModel @Inject constructor(
+    private val moodRepository: MoodRepository
 ) : ViewModel() {
-    protected val _emotions: MutableStateFlow<List<Emotion>> = MutableStateFlow(emptyList())
-    protected val _notes: MutableStateFlow<List<Note>> = MutableStateFlow(emptyList())
-    protected var _emotionIdList: List<Int> = emptyList()
+    private val _emotions: MutableStateFlow<List<Emotion>> = MutableStateFlow(emptyList())
+    private val _notes: MutableSharedFlow<List<NoteWithEmotion>> = MutableSharedFlow(replay = 0)
+    private var _emotionIdList: List<Int> = emptyList()
     val emotions: StateFlow<List<Emotion>> = _emotions.asStateFlow()
-    val notes: StateFlow<List<Note>> = _notes.asStateFlow()
+    val notes: SharedFlow<List<NoteWithEmotion>> = _notes
 
     init {
         viewModelScope.launch {
@@ -39,8 +43,6 @@ open class MoodViewModel @Inject constructor(
                 _emotionIdList = it.map { it.id }
             }
         }
-
-        clearFilter()
     }
 
     fun clearFilter() {
@@ -52,17 +54,19 @@ open class MoodViewModel @Inject constructor(
         emotionId: Int?, event: String?
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            moodRepository.getAllNotes()
+            moodRepository.getNotesWithEmotions()
                 .map {
-                    it.filter { note ->
-                        ((emotionId == null && note.emotionId in _emotionIdList)
-                                || (emotionId != null && note.emotionId == emotionId)) &&
-                        (note.date > (dateFrom ?: 0L) && note.date < (dateTo ?: 9999L)) &&
-                        note.event.contains((event ?: ""))
+                    Log.d("NotesVM-before", it.toString())
+                    it.filter { noteEmotion ->
+                        (emotionId == null || emotionId == noteEmotion.emotion.id) &&
+                                (dateFrom == null || noteEmotion.note.date >= dateFrom) &&
+                                (dateTo == null || noteEmotion.note.date <= dateTo) &&
+                                (event == "" || noteEmotion.note.event.contains(event ?: ""))
                     }
                 }
                 .collect {
-                    _notes.value = it
+                    Log.d("NotesVM-after", it.toString())
+                    _notes.emit(it)
                 }
         }
     }
@@ -73,12 +77,12 @@ open class MoodViewModel @Inject constructor(
         }
     }
 
-    fun getNote(id: Int, callback: (Note) -> Unit) {
+    fun getNote(id: Long, callback: (Note) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val note = moodRepository.getNote(id)
-            withContext(Dispatchers.Main){
-                callback(note)
-            }
+
+            callback(note)
+
         }
     }
 

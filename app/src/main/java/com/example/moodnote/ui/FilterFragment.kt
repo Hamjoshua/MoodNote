@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.moodnote.R
@@ -31,7 +32,7 @@ import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
-    private val viewModel: MoodViewModel by viewModels()
+    private val viewModel: MoodViewModel by activityViewModels()
     private lateinit var binding: FragmentFilterBinding
     private lateinit var currentButton: Button
     private val allEmotionsElementName: String = "Все эмоции"
@@ -49,10 +50,28 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
 
         initSpinner()
         initButtons()
+        applyFilter(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applyFilter(false)
+        Log.d("FilterActivity", "User returned")
+    }
+
+    private fun applyFilter(withToast : Boolean = true) {
+        viewModel.updateNotes(
+            binding.dateFromButton.text.toString().toLongDate(),
+            binding.dateToButton.text.toString().toLongDate(),
+            getEmotionFromSpinner(),
+            binding.eventEditText.text.toString()
+        )
+        if(withToast){
+            Toast.makeText(requireContext(), "Фильтр применен", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun initButtons() {
-        // TODO
         binding.dateToButton.setOnClickListener {
             var minDate: Long? = null
             if (binding.dateFromButton.text != "") {
@@ -71,13 +90,7 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         }
 
         binding.applyButton.setOnClickListener {
-            viewModel.updateNotes(
-                binding.dateFromButton.text.toString().toLongDate(),
-                binding.dateToButton.text.toString().toLongDate(),
-                getEmotionFromSpinner(),
-                binding.eventEditText.text.toString()
-            )
-            Toast.makeText(requireContext(), "Фильтр применен", Toast.LENGTH_SHORT).show()
+            applyFilter()
         }
 
         binding.clearFilterButton.setOnClickListener {

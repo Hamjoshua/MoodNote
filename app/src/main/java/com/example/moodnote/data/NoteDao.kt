@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,7 +15,7 @@ interface NoteDao {
     fun getAllNotes() : Flow<List<Note>>
 
     @Query("Select * from Note where id = (:id)")
-    fun getNote(id: Int) : Note
+    fun getNote(id: Long) : Note
 
     @Insert(onConflict = REPLACE)
     fun insertOrReplace(note: Note)
@@ -30,4 +31,8 @@ interface NoteDao {
 
     @Delete
     fun deleteNote(note: Note)
+
+    @Transaction
+    @Query("SELECT * FROM Note")
+    fun getNotesWithEmotions(): Flow<List<NoteWithEmotion>>
 }

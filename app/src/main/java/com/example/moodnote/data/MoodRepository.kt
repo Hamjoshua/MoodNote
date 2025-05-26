@@ -24,7 +24,7 @@ class MoodRepository @Inject constructor(
         noteDao.insertOrReplace(note)
     }
 
-    fun getNote(id: Int): Note {
+    fun getNote(id: Long): Note {
         return noteDao.getNote(id)
     }
 
@@ -33,5 +33,9 @@ class MoodRepository @Inject constructor(
         emotionIdList: List<Int>, event: String?
     ): Flow<List<Note>> {
         return noteDao.getNotesByFilter(dateFrom, dateTo, emotionIdList, event)
+    }
+
+    fun getNotesWithEmotions() : Flow<List<NoteWithEmotion>>{
+        return noteDao.getNotesWithEmotions()
     }
 }
