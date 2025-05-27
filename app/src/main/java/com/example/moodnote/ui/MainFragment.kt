@@ -62,7 +62,14 @@ class MainFragment : Fragment(), OnNoteElementClick {
         super.onViewCreated(view, savedInstanceState)
 
         initRView()
+        initButtons()
+    }
 
+    private fun initButtons() {
+        binding.toNoteForm.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.noteFormFragment)
+        }
     }
 
     override fun onClick(note: Note) {
