@@ -31,6 +31,16 @@ class ExtendedMoodViewModel @Inject constructor(
         }
     }
 
+    fun getAllEmotions(
+         callback: (List<Note>) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moodRepository.getAllNotes().collect {
+                it-> callback(it)
+            }
+        }
+    }
+
     fun getDistinctEmotionIdsByFilter(
         dateFrom: Long?, dateTo: Long?,
         emotionIdList: List<Int>?, event: String?, callback: (List<Int>) -> Unit

@@ -2,6 +2,7 @@ package com.example.moodnote.data
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
+import java.util.Calendar
 import javax.inject.Inject
 
 class MoodRepository @Inject constructor(
@@ -21,6 +22,7 @@ class MoodRepository @Inject constructor(
     }
 
     fun insertOrReplaceNote(note: Note) {
+        Calendar.getInstance().timeInMillis
         noteDao.insertOrReplace(note)
     }
 

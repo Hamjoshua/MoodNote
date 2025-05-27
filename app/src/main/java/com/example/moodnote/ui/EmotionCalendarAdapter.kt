@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class EmotionCalendarAdapter(
     private val context: Context,
@@ -14,9 +17,12 @@ class EmotionCalendarAdapter(
 ) : BaseAdapter() {
 
     fun setData(data: List<String>){
-        this.data = data
-        notifyDataSetChanged()
+        CoroutineScope(Dispatchers.Main).launch {
+            this@EmotionCalendarAdapter.data = data
+            notifyDataSetChanged()
+        }
     }
+
     override fun getCount(): Int = data.size
 
     override fun getItem(position: Int): String = data[position]

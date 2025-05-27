@@ -65,10 +65,18 @@ class EmotionDashboardFragment : Fragment() {
         val emotionIdList: List<Int>? = emptyList() // or emptyList(), depending on what you want
         val event: String? = null
 
-        viewModel.getDistinctEmotionIdsByFilter(dateFrom,dateTo,emotionIdList,event) { emotionIds ->
+//        viewModel.getDistinctEmotionIdsByFilter(dateFrom,dateTo,emotionIdList,event) { emotionIds ->
+        viewModel.getAllEmotions() { emotionIds ->
             val listEmotions = viewModel.emotions.value ?: emptyList()
-            val emojiList: List<String> = emotionIds.mapNotNull { id ->
-                listEmotions.find { it.id == id }?.let { emotion ->
+            val emojiList: List<String> = emotionIds.mapNotNull { note ->
+                var isAcceptCondition: Boolean = false
+
+                if (note.date > dateFrom){
+                   if (note.date < dateTo) {
+                       isAcceptCondition = true
+                   }
+                }
+                listEmotions.find { it.id == note.emotionId }?.let { emotion ->
                     getEmojiFromUnicode(emotion)
                 }
             }
