@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.transition.TransitionManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +24,7 @@ import com.example.moodnote.R
 import com.example.moodnote.databinding.FragmentFilterBinding
 import com.example.moodnote.utils.toLongDate
 import com.example.moodnote.vm.MoodViewModel
+import com.google.android.material.transition.platform.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -37,8 +41,7 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     private lateinit var currentButton: Button
     private val allEmotionsElementName: String = "Все эмоции"
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentFilterBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
@@ -48,9 +51,25 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAccordion()
         initSpinner()
         initButtons()
         applyFilter(false)
+    }
+
+    private fun initAccordion() {
+        binding.filterContent.visibility = View.GONE
+
+        binding.accordionButton.setOnClickListener {
+            val isExpanded = binding.filterContent.visibility == View.VISIBLE
+            TransitionManager.beginDelayedTransition(binding.root, MaterialFadeThrough())
+            binding.filterContent.visibility = if (isExpanded) View.GONE else View.VISIBLE
+            binding.accordionButton.icon = ContextCompat.getDrawable(
+                requireContext(),
+                if (isExpanded) R.drawable.baseline_expand_more_24 else
+                    R.drawable.baseline_expand_less_24
+            )
+        }
     }
 
     override fun onResume() {
@@ -59,14 +78,14 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         Log.d("FilterActivity", "User returned")
     }
 
-    private fun applyFilter(withToast : Boolean = true) {
+    private fun applyFilter(withToast: Boolean = true) {
         viewModel.updateNotes(
             binding.dateFromButton.text.toString().toLongDate(),
             binding.dateToButton.text.toString().toLongDate(),
             getEmotionFromSpinner(),
             binding.eventEditText.text.toString()
         )
-        if(withToast){
+        if (withToast) {
             Toast.makeText(requireContext(), "Фильтр применен", Toast.LENGTH_SHORT).show()
         }
     }
