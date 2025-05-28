@@ -32,7 +32,7 @@ class RecentEmotionsAdapter(
 
 
     init {
-        viewModel.getLastNotes(2) { notes ->
+        viewModel.getLastNotes(10) { notes ->
             _listNotes = notes // Update _listNotes with the received notes
         }
         notifyDataSetChanged()

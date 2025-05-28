@@ -3,6 +3,7 @@ package com.example.moodnote.vm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moodnote.data.EmojiCountResult
 import com.example.moodnote.data.Emotion
 import com.example.moodnote.data.MoodRepository
 import com.example.moodnote.data.Note
@@ -47,6 +48,28 @@ class ExtendedMoodViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             moodRepository.getDistinctEmotionIdsByFilter(dateFrom, dateTo, emotionIdList, event).collect { emotionIds ->
+                callback(emotionIds)
+            }
+        }
+    }
+
+    fun getDistinctEmotionEmojiCodeIdsByFilter(
+        dateFrom: Long?, dateTo: Long?,
+        emotionIdList: List<Int>?, event: String?, callback: (List<Int>) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moodRepository.getDistinctEmotionEmojiCodeIdsByFilter(dateFrom, dateTo, emotionIdList, event).collect { emotionIds ->
+                callback(emotionIds)
+            }
+        }
+    }
+
+    fun getEmotionEmojiCodeCountIdsByFilter(
+        dateFrom: Long?, dateTo: Long?,
+        emotionIdList: List<Int>?, event: String?, callback: (List<EmojiCountResult>) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moodRepository.getEmotionEmojiCodeCountIdsByFilter(dateFrom, dateTo, emotionIdList, event).collect { emotionIds ->
                 callback(emotionIds)
             }
         }

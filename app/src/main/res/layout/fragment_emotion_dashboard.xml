@@ -13,21 +13,19 @@ android:layout_height="wrap_content"
 android:orientation="vertical"
 android:padding="16dp">
 
-<!-- Header (как в GitHub) -->
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Emotion Dashboard"
+    android:text="Дашборд эмоций"
     android:textColor="#E6EDF3"
     android:textSize="24sp"
     android:textStyle="bold" />
 
-<!-- Календарь эмоций (как Contributions) -->
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:text="Your Emotions This Month"
+    android:text="Эмоции за 30 месяц"
     android:textColor="#7D8590"
     android:textSize="16sp" />
 
@@ -56,7 +54,7 @@ android:padding="16dp">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="24dp"
-    android:text="Weekly Emotion Stats"
+    android:text="Статистика эмоций за неделю"
     android:textColor="#7D8590"
     android:textSize="16sp" />
 
@@ -71,7 +69,7 @@ android:padding="16dp">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="24dp"
-    android:text="Recent Emotions"
+    android:text="Последние 10 эмоций"
     android:textColor="#7D8590"
     android:textSize="16sp" />
 

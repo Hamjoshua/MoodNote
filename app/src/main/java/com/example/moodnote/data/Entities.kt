@@ -7,6 +7,11 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
+data class EmojiCountResult(
+    val emojiUnicode: Int,
+    val count: Int
+)
+
 @Entity
 data class Emotion(
     @PrimaryKey val id: Int,

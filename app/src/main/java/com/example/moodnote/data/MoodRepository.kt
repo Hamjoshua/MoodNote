@@ -22,7 +22,7 @@ class MoodRepository @Inject constructor(
     }
 
     fun insertOrReplaceNote(note: Note) {
-        Calendar.getInstance().timeInMillis
+        var curTime = Calendar.getInstance().timeInMillis
         noteDao.insertOrReplace(note)
     }
 
@@ -46,6 +46,26 @@ class MoodRepository @Inject constructor(
     ): Flow<List<Int>> {
         val list = emotionIdList ?: emptyList()
         return noteDao.getDistinctEmotionIdsByFilter(dateFrom, dateTo, list, list.size, event)
+    }
+
+    fun getDistinctEmotionEmojiCodeIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>?,
+        event: String?
+    ): Flow<List<Int>> {
+        val list = emotionIdList ?: emptyList()
+        return noteDao.getDistinctEmotionEmojiCodeIdsByFilter(dateFrom, dateTo, list,list.size, event)
+    }
+
+    fun getEmotionEmojiCodeCountIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>?,
+        event: String?
+    ): Flow<List<EmojiCountResult>> {
+        val list = emotionIdList ?: emptyList()
+        return noteDao.getEmotionEmojiCodeCountIdsByFilter(dateFrom, dateTo, list,list.size, event)
     }
 
     fun getLastNotes(numberNotes:Long): List<Note> {

@@ -44,6 +44,44 @@ interface NoteDao {
         event: String?
     ): Flow<List<Int>>
 
+    @Query("""
+    SELECT Emotion.emojiUnicode 
+    FROM (SELECT DISTINCT Note.emotionId 
+          FROM Note 
+          WHERE (:dateFrom IS NULL OR date > :dateFrom) 
+            AND (:dateTo IS NULL OR date < :dateTo) 
+            AND (:emotionIdListSize = 0 OR emotionId IN (:emotionIdList)) 
+            AND (:event IS NULL OR event LIKE :event)) as a 
+    JOIN Emotion ON Emotion.id = a.emotionId
+""")
+    fun getDistinctEmotionEmojiCodeIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>?,
+        emotionIdListSize: Int,
+        event: String?
+    ): Flow<List<Int>>
+
+
+    @Query("""
+    SELECT Emotion.emojiUnicode, COUNT(*) as count
+    FROM (SELECT Note.emotionId 
+          FROM Note 
+          WHERE (:dateFrom IS NULL OR date > :dateFrom) 
+            AND (:dateTo IS NULL OR date < :dateTo) 
+            AND (:emotionIdListSize = 0 OR emotionId IN (:emotionIdList)) 
+            AND (:event IS NULL OR event LIKE :event)) as a 
+    JOIN Emotion ON Emotion.id = a.emotionId
+    GROUP BY Emotion.emojiUnicode
+""")
+    fun getEmotionEmojiCodeCountIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>?,
+        emotionIdListSize: Int,
+        event: String?
+    ): Flow<List<EmojiCountResult>>
+
     @Query(
     "SELECT * FROM Note" +
     " ORDER BY date DESC" +
