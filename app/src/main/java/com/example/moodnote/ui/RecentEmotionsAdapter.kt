@@ -16,24 +16,21 @@ import java.util.Date
 import java.util.Locale
 
 data class EmotionData (
-    val emotionType: String, // "Happy", "Sad", "Angry"
-    var date: String,       // "2023-10-01"
-    val note: String? = null // Опциональная заметка
+    val emotionType: String,
+    var date: String,
+    val note: String? = null
 )
 
 class RecentEmotionsAdapter(
-    private val lifecycleOwner: LifecycleOwner,
     private val viewModel: ExtendedMoodViewModel
 ) :
     RecyclerView.Adapter<RecentEmotionsAdapter.ViewHolder>() {
 
-     var _listNotes: List<Note> = emptyList()
-
-
+    var _listNotes: List<Note> = emptyList()
 
     init {
         viewModel.getLastNotes(10) { notes ->
-            _listNotes = notes // Update _listNotes with the received notes
+            _listNotes = notes
         }
         notifyDataSetChanged()
     }

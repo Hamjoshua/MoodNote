@@ -28,9 +28,8 @@ import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 data class EmotionStat(
-    val emoji: String,  // Unicode эмодзи
-    val count: Int,       // Количество записей
-//    val name: String      // Название эмоции (например "Радость")
+    val emoji: String,
+    val count: Int
 )
 
 class EmotionDashboardFragment : Fragment() {
@@ -56,16 +55,9 @@ class EmotionDashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Настройка графика
         emotionBarChart = binding.emotionBarChart
 
-        var emotionStats: List<EmotionStat>
-
-        // Загрузка данных
-        loadEmotionData()
-
-        // Настройка RecyclerView
-        recentEmotionsAdapter = RecentEmotionsAdapter(viewLifecycleOwner,viewModel)
+        recentEmotionsAdapter = RecentEmotionsAdapter(viewModel)
         binding.recentEmotionsList.adapter = recentEmotionsAdapter
 
         emotionCalendarAdapter = EmotionCalendarAdapter(view.context, emptyList())
@@ -106,40 +98,6 @@ class EmotionDashboardFragment : Fragment() {
         }
     }
 
-    private fun loadEmotionData() {
-        return
-        // реализация логики загрзуки
-    }
-
-//    private fun setupEmotionChart() {
-//        val entries = listOf(
-//            BarEntry(0f, 5f),  // День 1: 5 радости
-//            BarEntry(1f, 3f),  // День 2: 3 грусти
-//            BarEntry(2f, 2f)    // День 3: 2 злости
-//        )
-//
-//        val dataSet = BarDataSet(entries, "Emotions").apply {
-//            color = Color.GREEN
-//            valueTextColor = Color.WHITE
-//        }
-//
-//        val barData = BarData(dataSet)
-//        emotionBarChart.data = barData
-//        emotionBarChart.setFitBars(true)
-//        emotionBarChart.description.isEnabled = false
-//        emotionBarChart.animateY(1000)
-//        emotionBarChart.invalidate()
-//    }
-
-    private fun getColorForEmotion(emoj: String): Int {
-        return when(emoj) {
-            "\uD83D\uDE00" -> Color.YELLOW    // 😀
-            "\uD83D\uDE22" -> Color.BLUE      // 😢
-            "\uD83D\uDE20" -> Color.RED       // 😠
-            else -> Color.GRAY
-        }
-    }
-
     private fun setupEmotionChart(emotionStats: List<EmotionStat>) {
         if (emotionStats.isEmpty()) {
             emotionBarChart.clear()
@@ -147,56 +105,16 @@ class EmotionDashboardFragment : Fragment() {
             return
         }
 
-        // 1. Подготовка данных
         val entries = emotionStats.mapIndexed { index, stat ->
             BarEntry(index.toFloat(), stat.count.toFloat())
         }
 
-        // 2. Создание набора данных
         val dataSet = BarDataSet(entries, "Частота эмоций").apply {
-//            colors = emotionStats.map { it) }
             valueTextColor = Color.BLACK
             valueTextSize = 12f
             setDrawValues(true)
         }
-//
-//        // 3. Настройка графика
-//        emotionBarChart.apply {
-//            data = BarData(dataSet)
-//
-//            // Настройка оси X с эмодзи
-//            xAxis.apply {
-//                valueFormatter = object : ValueFormatter() {
-//                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-//                        val index = value.toInt()
-//                        return if (index in emotionStats.indices) {
-//                            emotionStats[index].emoji
-//                        } else ""
-//                    }
-//                }
-//                position = XAxis.XAxisPosition.BOTTOM
-//                granularity = 1f
-//                setDrawGridLines(false)
-//            }
-//
-//            // Настройка оси Y
-//            axisLeft.apply {
-//                granularity = 1f
-//                axisMinimum = 0f
-//            }
-//            axisRight.isEnabled = false
-//
-//            // Общие настройки
-//            legend.isEnabled = false
-//            description.isEnabled = false
-//            setTouchEnabled(false)
-//            setFitBars(true)
-//            animateY(1000)
-//            invalidate()
-//        }
-
         emotionBarChart.apply {
-            // Все настройки данных и осей
             data = BarData(dataSet)
 
             xAxis.apply {
@@ -222,12 +140,10 @@ class EmotionDashboardFragment : Fragment() {
             setTouchEnabled(false)
             setFitBars(true)
 
-            // Запускаем анимацию в UI-потоке
             post {
                 animateY(1000)
                 invalidate()
             }
         }
-
     }
 }

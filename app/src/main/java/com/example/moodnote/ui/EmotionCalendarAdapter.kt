@@ -1,7 +1,5 @@
 package com.example.moodnote.ui
 
-//package com.example.moodnote.adapter
-
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class EmotionCalendarAdapter(
     private val context: Context,
-    private var data: List<String> // List of Text to show in the grid
+    private var data: List<String>
 ) : BaseAdapter() {
 
     fun setData(data: List<String>){
@@ -31,7 +29,7 @@ class EmotionCalendarAdapter(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val textView: TextView = convertView as? TextView ?: TextView(context).apply {
-            // Styling the TextView to look good in the GridView
+
             val padding = (8 * context.resources.displayMetrics.density).toInt()
             setPadding(padding, padding, padding, padding)
             gravity = android.view.Gravity.CENTER
@@ -39,11 +37,9 @@ class EmotionCalendarAdapter(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            // Modern simple text appearance
+
             setTextColor(android.graphics.Color.BLACK)
             textSize = 16f
-            // Optional: background drawable or color if you want to highlight cells
-            // setBackgroundResource(R.drawable.grid_item_background)
         }
         textView.text = getItem(position)
         return textView
