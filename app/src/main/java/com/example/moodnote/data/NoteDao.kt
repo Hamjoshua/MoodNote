@@ -1,0 +1,97 @@
+package com.example.moodnote.data
+
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
+import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface NoteDao {
+    @Query("Select * from Note")
+    fun getAllNotes() : Flow<List<Note>>
+
+    @Query("Select * from Note where id = (:id)")
+    fun getNote(id: Long) : Note
+
+    @Insert(onConflict = REPLACE)
+    fun insertOrReplace(note: Note)
+
+    @Query("Select * from Note where" +
+            "(:dateFrom is null or date > :dateFrom) and" +
+            "(:dateTo is null or date < :dateTo) and" +
+            "(:emotionIdList is null or emotionId in (:emotionIdList)) and" +
+            "(:event is null or event like :event)")
+    fun getNotesByFilter(dateFrom: Long?, dateTo: Long?,
+                         emotionIdList: List<Int>,
+                         event: String?) : Flow<List<Note>>
+
+    @Query("""
+    SELECT DISTINCT emotionId FROM Note WHERE
+    (:dateFrom IS NULL OR date > :dateFrom) AND
+    (:dateTo IS NULL OR date < :dateTo) AND
+    (:emotionIdListSize = 0 OR emotionId IN (:emotionIdList)) AND
+    (:event IS NULL OR event LIKE :event)
+""")
+    fun getDistinctEmotionIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>,
+        emotionIdListSize: Int,
+        event: String?
+    ): Flow<List<Int>>
+
+    @Query("""
+    SELECT Emotion.emojiUnicode 
+    FROM (SELECT DISTINCT Note.emotionId 
+          FROM Note 
+          WHERE (:dateFrom IS NULL OR date > :dateFrom) 
+            AND (:dateTo IS NULL OR date < :dateTo) 
+            AND (:emotionIdListSize = 0 OR emotionId IN (:emotionIdList)) 
+            AND (:event IS NULL OR event LIKE :event)) as a 
+    JOIN Emotion ON Emotion.id = a.emotionId
+""")
+    fun getDistinctEmotionEmojiCodeIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>?,
+        emotionIdListSize: Int,
+        event: String?
+    ): Flow<List<Int>>
+
+
+    @Query("""
+    SELECT Emotion.emojiUnicode, COUNT(*) as count, COUNT(*) * emotionalWeight as weightCount
+    FROM (SELECT Note.emotionId 
+          FROM Note 
+          WHERE (:dateFrom IS NULL OR date > :dateFrom) 
+            AND (:dateTo IS NULL OR date < :dateTo) 
+            AND (:emotionIdListSize = 0 OR emotionId IN (:emotionIdList)) 
+            AND (:event IS NULL OR event LIKE :event)) as a 
+    JOIN Emotion ON Emotion.id = a.emotionId
+    GROUP BY Emotion.emojiUnicode
+""")
+    fun getEmotionEmojiCodeCountIdsByFilter(
+        dateFrom: Long?,
+        dateTo: Long?,
+        emotionIdList: List<Int>?,
+        emotionIdListSize: Int,
+        event: String?
+    ): Flow<List<EmojiCountResult>>
+
+    @Query(
+    "SELECT * FROM Note" +
+    " ORDER BY date DESC" +
+    " LIMIT :countNotes")
+    fun getLastNotes(countNotes: Long): List<Note>
+
+    @Delete
+    fun deleteNote(note: Note)
+
+    @Transaction
+    @Query("SELECT * FROM Note")
+    fun getNotesWithEmotions(): Flow<List<NoteWithEmotion>>
+}

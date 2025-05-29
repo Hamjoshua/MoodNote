@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.moodnote.ui.MainFragment"
+        android:label="Главное меню"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_noteFormFragment"
+            app:destination="@id/noteFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteFormFragment"
+        android:name="com.example.moodnote.ui.NoteFormFragment"
+        android:label="Создание записи"
+        tools:layout="@layout/fragment_note_form" >
+        <argument
+            android:name="noteId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_noteFormFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentEmotionDashboard"
+        android:name="com.example.moodnote.ui.EmotionDashboardFragment"
+        android:label="Дашборд эмоций"
+        tools:layout="@layout/fragment_emotion_dashboard" />
+</navigation>
