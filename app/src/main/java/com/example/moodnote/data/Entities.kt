@@ -7,6 +7,11 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
+data class EmojiCountResult(
+    val emojiUnicode: Int,
+    val count: Int
+)
+
 @Entity
 data class Emotion(
     @PrimaryKey val id: Int,
@@ -14,6 +19,16 @@ data class Emotion(
     val emojiUnicode: Int,
     val emotionalWeight: Int
 ) {
+    companion object {
+        // Эмоция по умолчанию (пустота/нейтраль)
+        val DEFAULT = Emotion(
+            id = -1,
+            name = "Empty",
+            emojiUnicode = 0x1F610, // 😐 (нейтральное лицо)
+            emotionalWeight = 0
+        )
+    }
+
     fun getEmojiFromUnicode(): String {
         return String(Character.toChars(emojiUnicode))
     }

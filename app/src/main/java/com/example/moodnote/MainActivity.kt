@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.mainFragment,
                 R.id.noteFormFragment,
-                R.id.statisticsFragment
+                R.id.statisticsFragment,
+                R.id.fragmentEmotionDashboard
             )
         )
 

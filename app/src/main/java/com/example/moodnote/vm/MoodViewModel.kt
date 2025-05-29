@@ -27,8 +27,8 @@ import javax.inject.Inject
 import javax.security.auth.callback.Callback
 
 @HiltViewModel
-class MoodViewModel @Inject constructor(
-    private val moodRepository: MoodRepository
+open class MoodViewModel @Inject constructor(
+    protected val moodRepository: MoodRepository
 ) : ViewModel() {
     private val _emotions: MutableStateFlow<List<Emotion>> = MutableStateFlow(emptyList())
     private val _notes: MutableSharedFlow<List<NoteWithEmotion>> = MutableSharedFlow(replay = 0)

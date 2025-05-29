@@ -24,7 +24,7 @@ class DateTimePickerHelper(
             minDate?.let { datePicker.minDate = it }
 
             setOnDateSetListener { _, year, month, day ->
-                currentDate = "$year/${month}/$day"
+                currentDate = "%04d/%02d/%02d".format(year, month + 1, day)
                 showTimePicker()
             }
         }
@@ -43,7 +43,8 @@ class DateTimePickerHelper(
     }
 
     override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
-        val dateTime = "$currentDate $hour:$minute"
+        var dateStr = "%02d:%02d".format(hour,minute)
+        val dateTime = "$currentDate $dateStr"
         onDateTimeSelected(dateTime)
     }
 }
