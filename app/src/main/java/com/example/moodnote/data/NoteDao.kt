@@ -64,7 +64,7 @@ interface NoteDao {
 
 
     @Query("""
-    SELECT Emotion.emojiUnicode, COUNT(*) as count
+    SELECT Emotion.emojiUnicode, COUNT(*) as count, COUNT(*) * emotionalWeight as weightCount
     FROM (SELECT Note.emotionId 
           FROM Note 
           WHERE (:dateFrom IS NULL OR date > :dateFrom) 

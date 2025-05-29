@@ -9,7 +9,8 @@ import androidx.room.Relation
 
 data class EmojiCountResult(
     val emojiUnicode: Int,
-    val count: Int
+    val count: Int,
+    val weightCount: Int
 )
 
 @Entity
