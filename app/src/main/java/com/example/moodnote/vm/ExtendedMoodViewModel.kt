@@ -33,11 +33,11 @@ class ExtendedMoodViewModel @Inject constructor(
     }
 
     fun getAllEmotions(
-         callback: (List<Note>) -> Unit
+        callback: (List<Note>) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            moodRepository.getAllNotes().collect {
-                it-> callback(it)
+            moodRepository.getAllNotes().collect { it ->
+                callback(it)
             }
         }
     }
@@ -47,9 +47,10 @@ class ExtendedMoodViewModel @Inject constructor(
         emotionIdList: List<Int>?, event: String?, callback: (List<Int>) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            moodRepository.getDistinctEmotionIdsByFilter(dateFrom, dateTo, emotionIdList, event).collect { emotionIds ->
-                callback(emotionIds)
-            }
+            moodRepository.getDistinctEmotionIdsByFilter(dateFrom, dateTo, emotionIdList, event)
+                .collect { emotionIds ->
+                    callback(emotionIds)
+                }
         }
     }
 
@@ -58,7 +59,12 @@ class ExtendedMoodViewModel @Inject constructor(
         emotionIdList: List<Int>?, event: String?, callback: (List<Int>) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            moodRepository.getDistinctEmotionEmojiCodeIdsByFilter(dateFrom, dateTo, emotionIdList, event).collect { emotionIds ->
+            moodRepository.getDistinctEmotionEmojiCodeIdsByFilter(
+                dateFrom,
+                dateTo,
+                emotionIdList,
+                event
+            ).collect { emotionIds ->
                 callback(emotionIds)
             }
         }
@@ -69,7 +75,12 @@ class ExtendedMoodViewModel @Inject constructor(
         emotionIdList: List<Int>?, event: String?, callback: (List<EmojiCountResult>) -> Unit
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            moodRepository.getEmotionEmojiCodeCountIdsByFilter(dateFrom, dateTo, emotionIdList, event).collect { emotionIds ->
+            moodRepository.getEmotionEmojiCodeCountIdsByFilter(
+                dateFrom,
+                dateTo,
+                emotionIdList,
+                event
+            ).collect { emotionIds ->
                 callback(emotionIds)
             }
         }

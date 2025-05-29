@@ -7,15 +7,15 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:backgroundTint="@color/md_theme_tertiary"
-        app:titleTextColor="@color/md_theme_onSecondary"
+        android:layout_marginTop="25dp"
+        app:titleTextColor="@color/md_theme_onPrimaryContainer"
         app:title="@string/app_name"
         app:titleTextAppearance="@style/TextAppearance.MoodNote.Headline"
         app:layout_constraintTop_toTopOf="parent"
+
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 

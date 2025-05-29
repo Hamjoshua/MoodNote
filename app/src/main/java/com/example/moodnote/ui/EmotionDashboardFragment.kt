@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.example.moodnote.R
 import com.example.moodnote.adapters.EmotionCalendarAdapter
 import com.example.moodnote.adapters.RecentEmotionsAdapter
 import com.example.moodnote.databinding.FragmentEmotionDashboardBinding
@@ -64,7 +65,12 @@ class EmotionDashboardFragment : Fragment() {
         val emotionIdList: List<Int>? = emptyList()
         val event: String? = null
 
-        viewModel.getDistinctEmotionEmojiCodeIdsByFilter(dateFrom,dateTo,emotionIdList,event) { emojiCodes ->
+        viewModel.getDistinctEmotionEmojiCodeIdsByFilter(
+            dateFrom,
+            dateTo,
+            emotionIdList,
+            event
+        ) { emojiCodes ->
             val emojiList: List<String> = emojiCodes.mapNotNull { code ->
                 getEmojiFromUnicode(code)
             }
@@ -72,7 +78,12 @@ class EmotionDashboardFragment : Fragment() {
             emotionCalendarAdapter.setData(emojiList)
         }
 
-        viewModel.getDistinctEmotionEmojiCodeIdsByFilter(dateFrom,dateTo,emotionIdList,event) { emojiCodes ->
+        viewModel.getDistinctEmotionEmojiCodeIdsByFilter(
+            dateFrom,
+            dateTo,
+            emotionIdList,
+            event
+        ) { emojiCodes ->
             val emojiList: List<String> = emojiCodes.mapNotNull { code ->
                 getEmojiFromUnicode(code)
             }
@@ -80,7 +91,12 @@ class EmotionDashboardFragment : Fragment() {
             emotionCalendarAdapter.setData(emojiList)
         }
 
-        viewModel.getEmotionEmojiCodeCountIdsByFilter(dateFrom, dateTo, emotionIdList, event) { emojiCodesCount ->
+        viewModel.getEmotionEmojiCodeCountIdsByFilter(
+            dateFrom,
+            dateTo,
+            emotionIdList,
+            event
+        ) { emojiCodesCount ->
             val emojiList = emojiCodesCount.map { (emojiCode, count) ->
                 EmotionStat(
                     emoji = getEmojiFromUnicode(emojiCode),
@@ -106,6 +122,9 @@ class EmotionDashboardFragment : Fragment() {
             valueTextColor = Color.BLACK
             valueTextSize = 12f
             setDrawValues(true)
+            colors = entries.map { entry ->
+                if (entry.y >= 0) R.color.md_theme_primary else R.color.md_theme_error
+            }
         }
         emotionBarChart.apply {
             data = BarData(dataSet)

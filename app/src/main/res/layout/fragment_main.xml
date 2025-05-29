@@ -30,7 +30,7 @@
                 android:paddingHorizontal="20dp">
 
                 <TextView
-                    style="@style/TextAppearance.MoodNote.Headline"
+                    style="@style/TextAppearance.MoodNote.Title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"

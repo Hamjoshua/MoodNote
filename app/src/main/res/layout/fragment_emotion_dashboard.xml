@@ -13,15 +13,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Дашборд эмоций"
-            android:textColor="#E6EDF3"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Эмоции за месяц"
             android:textColor="@color/md_theme_secondary"
             style="@style/TextAppearance.MoodNote.Label"
