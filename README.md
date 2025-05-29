@@ -13,7 +13,8 @@
 - MPAndroidChart
 
 ## Структура проекта  
-- `data/` — сущности Room, DAO, Repository  
-- `ui/` — Activity, Fragments
+- `adapters/` - адаптеры RecyclerView
+- `data/` - сущности Room, DAO, Repository  
+- `ui/` - Activity, Fragments
 - `vm/` - ViewModels
-- `utils/` — TypeConverters, Extensions  
+- `utils/` - TypeConverters, Extensions  
