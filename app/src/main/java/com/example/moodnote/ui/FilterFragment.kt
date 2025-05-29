@@ -145,7 +145,7 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
         if (position == 0) {
             return null
         } else {
-            return position - 1
+            return position
         }
     }
 
