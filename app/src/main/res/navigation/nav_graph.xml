@@ -28,14 +28,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/statisticsFragment"
-        android:name="com.example.moodnote.ui.StatisticsFragment"
-        android:label="Статистика"
-        tools:layout="@layout/fragment_statistics" />
-
-    <fragment
         android:id="@+id/fragmentEmotionDashboard"
         android:name="com.example.moodnote.ui.EmotionDashboardFragment"
-        android:label="Статистика"
+        android:label="Дашборд эмоций"
         tools:layout="@layout/fragment_emotion_dashboard" />
 </navigation>

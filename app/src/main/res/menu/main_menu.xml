@@ -13,16 +13,9 @@
         android:icon="@drawable/baseline_add_24"
         android:title="Создать" />
     <item
-        android:id="@+id/statisticsFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:icon="@drawable/baseline_query_stats_24"
-        android:title="Статистика" />
-
-    <item
         android:id="@+id/fragmentEmotionDashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_query_stats_24"
-        android:title="ДашБордЭмоций"/>
+        android:title="Дашборд эмоций"/>
 </menu>

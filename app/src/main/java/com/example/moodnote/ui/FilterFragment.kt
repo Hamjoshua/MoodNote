@@ -75,7 +75,6 @@ class FilterFragment : Fragment(), TimePickerDialog.OnTimeSetListener {
     override fun onResume() {
         super.onResume()
         applyFilter(false)
-        Log.d("FilterActivity", "User returned")
     }
 
     private fun applyFilter(withToast: Boolean = true) {

@@ -1,7 +1,6 @@
 package com.example.moodnote.ui
 
 import android.os.Bundle
-import android.security.ConfirmationAlreadyPresentingException
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +17,8 @@ import com.example.moodnote.R
 import com.example.moodnote.data.Note
 import com.example.moodnote.databinding.FragmentMainBinding
 import com.example.moodnote.utils.ConfirmationDialog
-import com.example.moodnote.utils.NoteAdapter
-import com.example.moodnote.utils.OnNoteElementClick
+import com.example.moodnote.adapters.NoteAdapter
+import com.example.moodnote.adapters.OnNoteElementClick
 import com.example.moodnote.vm.MoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

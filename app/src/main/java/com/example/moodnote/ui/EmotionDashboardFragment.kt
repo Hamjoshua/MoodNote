@@ -7,15 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewModelScope
-import com.example.moodnote.data.Emotion
+import com.example.moodnote.adapters.EmotionCalendarAdapter
+import com.example.moodnote.adapters.RecentEmotionsAdapter
 import com.example.moodnote.databinding.FragmentEmotionDashboardBinding
 import com.example.moodnote.vm.ExtendedMoodViewModel
-import com.example.moodnote.vm.MoodViewModel
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -23,8 +18,6 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 data class EmotionStat(

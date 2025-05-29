@@ -1,4 +1,4 @@
-package com.example.moodnote.utils
+package com.example.moodnote.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moodnote.data.Note
 import com.example.moodnote.data.NoteWithEmotion
 import com.example.moodnote.databinding.RItemBinding
+import com.example.moodnote.utils.toDateString
 
 class NoteViewHolder(binding: RItemBinding) : RecyclerView.ViewHolder(binding.root) {
     val binding = binding

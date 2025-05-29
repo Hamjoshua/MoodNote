@@ -102,10 +102,10 @@ class NoteFormFragment : Fragment() {
     private fun initButtons() {
         val cal: Calendar = Calendar.getInstance()
         binding.dateButton.text = "${cal.get(Calendar.YEAR)}" +
-                "/${cal.get(Calendar.MONTH)}" +
-                "/${cal.get(Calendar.DAY_OF_MONTH)}" +
-                " ${cal.get(Calendar.HOUR)}:" +
-                "${cal.get(Calendar.MINUTE)}"
+                "/${(cal.get(Calendar.MONTH) + 1).toString().padStart(2, '0')}" +
+                "/${cal.get(Calendar.DAY_OF_MONTH).toString().padStart(2, '0')}" +
+                " ${cal.get(Calendar.HOUR).toString().padStart(2, '0')}:" +
+                "${cal.get(Calendar.MINUTE).toString().padStart(2, '0')}"
 
         binding.dateButton.setOnClickListener {
             DateTimePickerHelper(requireContext()) {

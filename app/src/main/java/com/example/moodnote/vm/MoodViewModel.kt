@@ -56,7 +56,6 @@ open class MoodViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             moodRepository.getNotesWithEmotions()
                 .map {
-                    Log.d("NotesVM-before", it.toString())
                     it.filter { noteEmotion ->
                         (emotionId == null || emotionId == noteEmotion.emotion.id) &&
                                 (dateFrom == null || noteEmotion.note.date >= dateFrom) &&
@@ -65,7 +64,6 @@ open class MoodViewModel @Inject constructor(
                     }
                 }
                 .collect {
-                    Log.d("NotesVM-after", it.toString())
                     _notes.emit(it)
                 }
         }

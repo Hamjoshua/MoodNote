@@ -1,16 +1,15 @@
-package com.example.moodnote.ui
+package com.example.moodnote.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moodnote.R
 import com.example.moodnote.data.Emotion
 import com.example.moodnote.data.Note
+import com.example.moodnote.utils.toDateString
 import com.example.moodnote.vm.ExtendedMoodViewModel
-import com.example.moodnote.vm.MoodViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -59,9 +58,7 @@ class RecentEmotionsAdapter(
         val listEmotions = viewModel.emotions.value;
         val emotion = listEmotions.find { it.id == note.emotionId } ?: Emotion.DEFAULT
 
-        val date = Date(note.date)
-        val format = SimpleDateFormat("mm-dd", Locale.getDefault())
-        val dateString = format.format(date)
+        val dateString = note.date.toDateString("MM-dd")
 
         var emotionData = EmotionData(getEmojiFromUnicode(emotion),dateString,note.reason)
         holder.bind(emotionData)
